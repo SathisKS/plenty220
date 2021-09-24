@@ -152,10 +152,17 @@ class NovalnetInvoicePaymentMethod extends PaymentMethodService
     /**
      * Check if it is allowed to switch from this payment method
      *
+     * @param int $orderId
      * @return bool
      */
-    public function isSwitchableFrom(): bool
+    public function isSwitchableFrom($orderId = null): bool
     {
-	    return true;
+	if($orderId > 0) {
+		$tid_status = $this->paymentHelper->getNovalnetTxStatus($orderId);
+		if(!empty($tid_status) && !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100])) {
+			return true;
+		}
+        }
+    	return false;
     }
 }
