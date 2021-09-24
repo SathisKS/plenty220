@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="{{plugin_path('Novalnet')}}/css/novalnet_ui.css">
+
+<form method="post" id="nn_cc_form" name="nn_cc_form" action="{{nnPaymentProcessUrl}}">
+    <script type="text/javascript" src="https://cdn.novalnet.de/js/v2/NovalnetUtility.min.js" defer></script>
+    <script type="text/javascript" src="{{ plugin_path('Novalnet') }}/js/novalnet_cc.js" defer></script>
+
+    <input type="hidden" id="nn_pan_hash" name="nn_pan_hash" />
+    <input type="hidden" id="nn_unique_id" name="nn_unique_id" />
+    <input type="hidden" id="nn_cc3d_redirect" name="nn_cc3d_redirect" />
+    <input type="hidden" id="nn_cc_formfields" name="nn_cc_formfields" value="{{ccCustomFields|escape}}" /> 
+    <input type="hidden" id="nn_cc_formdetails" name="nn_cc_formdetails" value="{{ccFormDetails|escape}}" />
+    <input type="hidden" id="paymentKey" name="paymentKey" value="{{paymentMopKey}}" />
+    {% if reinit is not empty %}
+        <input type="hidden" id="nn_reinit" name="nn_reinit" value="{{reinit}}">
+        <input type="hidden" id="nn_orderamount" name="nn_orderamount" value="{{orderAmount}}">
+    {% endif %}
+                
+    <div class="modal_cc_popup">
+    <div class="modal-header">
+        <h4 class="modal-title">{{paymentName}}</h4>
+        <button type="button" aria-label="Close" data-dismiss="modal" class="close" onClick="window.location.reload();">
+            <span aria-hidden="true">x</span>
+        </button> 
+        
+    </div>
+    <div class="modal-body form-horizontal" style="margin-left:1rem;">
+        <div class="row">
+            <div class="loader"></div>
+            <iframe id="nn_iframe" frameborder="0" scrolling="no" width="100%"></iframe>
+        </div> 
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="novalnet_form_btn">
+            <i class="fa fa-check" aria-hidden="true"> </i>
+            {{ trans("Novalnet::PaymentMethod.submit_button_text") }}
+        </button>
+    </div>
+    </div>
+</form>

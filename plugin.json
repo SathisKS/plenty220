@@ -1,0 +1,50 @@
+{
+  "version": "2.1.2",
+  "license":"GPL-3.0",
+  "pluginIcon":"icon_plugin_xs.png",
+  "price":0.0,
+  "authorIcon":"icon_author_xs.png",
+  "name": "Novalnet",
+  "marketplaceName" : {"de":"Novalnet", "en":"Novalnet"},
+  "shortDescription": {
+    "de":"Das Novalnet Zahlungsplugin für Plentymarkets vereinfacht Ihre tägliche Arbeit, indem der gesamte Zahlungsvorgang vom Checkout bis zum Forderungsmanagement automatisiert wird. Das Plugin ist dazu entworfen, Sie dabei zu unterstützen, Ihre Verkaufszahlen zu erhöhen, indem es Ihnen verschiedene internationale und lokale Zahlungsarten bietet. Das Plugin ist perfekt an Plentymarkets angepasst sowie an die qualitativ hochwertige Palette von Dienstleistungen des Zahlungsanbieters Novalnet.",
+    "en":"Novalnet payment plugin for plentymarkets simplifies your daily work by automating the entire payment process from checkout till collection. This plugin is designed to help you increase your sales by offering various international and local payment methods. The plugin which is perfectly adjusted to plentymarkets and the top-quality range of services of the payment provider Novalnet."
+  },
+  "description": "PCI Compliant, seamless integration with the various types of payment and payment-related services integrated into one unique platform",
+  "author": "Novalnet AG",
+  "keywords": ["Novalnet", "plentymarkets", "payment", "plugin"],
+  "email": "sales@novalnet.de",
+  "phone": "+49 89 923068320",
+  "categories": [4083],
+  "type": "payment",
+  "namespace": "Novalnet",
+  "javaScriptFiles": [],
+  "containers": [],
+  "require": {
+    "IO": ">= 4.0.0",
+    "Ceres":">= 4.0.0"
+    },
+  "serviceProvider": "Novalnet\\Providers\\NovalnetServiceProvider",
+  "runOnBuild": [
+    "Novalnet\\Migrations\\UpdatePaymentMethods",
+    "Novalnet\\Migrations\\CreateTransactionTable",
+    "Novalnet\\Migrations\\UpdateTransactionTableDataType"
+  ],
+  "dataProviders": [
+    {
+      "key"         : "Novalnet\\Providers\\NovalnetOrderConfirmationDataProvider",
+      "name"        : "Novalnet payment details",
+      "description" : "Display the Novalnet payment details on the order confirmation page"
+    },
+    {
+      "key":"Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePayment",
+      "name":"Novalnet Payment Method Reinitialize Payment",
+      "description":"Display the Payment Button after the Payment changed to the PaymentMethod"
+    },
+    {
+      "key":"Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePaymentScript",
+      "name":"Novalnet PaymentMethod Reinitialize Payment Script",
+      "description":"A Script for displaying the Payment Button after the Payment changed to the PaymentMethod"
+    }
+  ]
+}
