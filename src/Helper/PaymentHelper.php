@@ -664,4 +664,27 @@ class PaymentHelper
         $paymentObj = $this->paymentRepository->createPayment($payment);
         $this->assignPlentyPaymentToPlentyOrder($paymentObj, (int)$paymentData['child_order_id']);
     }
+    
+    /**
+      * Get Novalnet transaction status
+      *
+      * @param int $orderId
+      * @return int|null
+      */
+    public function getNovalnetTxStatus($orderId) {
+        $payments = $this->paymentRepository->getPaymentsByOrderId($orderId);
+         // Get transaction status
+        foreach($payments as $payment)
+        {
+            $properties = $payment->properties;
+            foreach($properties as $property)
+            {
+              if ($property->typeId == 30)
+              {
+                $tid_status = $property->value;
+              }
+            }
+        }
+        return !empty($tid_status) ? $tid_status : '';
+    }
 }
