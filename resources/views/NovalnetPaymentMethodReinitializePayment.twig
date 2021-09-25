@@ -28,7 +28,7 @@
         {% if isRedirectPayment == true %}
         <input type="hidden" name="nn_redirect_url" id="nn_redirect_url" value="{{redirectUrl}}">
         <a class="payment-confirmation-btn btn btn-primary" id="redirect-payment-process"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </a>
-        {% elseif paymentKey in ['NOVALNET_SEPA', 'NOVALNET_CC'] %}
+        {% elseif paymentKey in ['NOVALNET_SEPA', 'NOVALNET_CC'] or nnGuaranteeStatus == 'guarantee' %}
          <a class="payment-confirmation-btn btn btn-primary" @click="" id="form-payment-process" data-toggle="modal" data-target="#novalnetPaymentForm"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </a>
         {% else %}
         <a class="payment-confirmation-btn btn btn-primary" id="direct-payment-process"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </a>
@@ -41,7 +41,9 @@
 <div class="modal" tabindex="-1" role="dialog" id="novalnetPaymentForm">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      {% if paymentKey == 'NOVALNET_SEPA' %}
+      {% if paymentKey == 'NOVALNET_INVOICE' %}
+      {% include "Novalnet::PaymentForm.NOVALNET_INVOICE" %}
+      {% elseif paymentKey == 'NOVALNET_SEPA' %}
       {% include "Novalnet::PaymentForm.NOVALNET_SEPA" %}
       {% elseif paymentKey == 'NOVALNET_CC' %}
       {% include "Novalnet::PaymentForm.NOVALNET_CC" %}
