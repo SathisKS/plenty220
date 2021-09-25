@@ -18,6 +18,10 @@
                 <input type="hidden" id="nn_dob_invalid" name="nn_dob_invalid" value="{{trans("Novalnet::PaymentMethod.dobInvalid")}}">
                 <input type="hidden" id="nn_dob_month" name="nn_dob_month" value="{{trans("Novalnet::PaymentMethod.monthOption")}}">
                 <input type="hidden" name="nn_invoice_valid_dob_msg" id="nn_invoice_valid_dob_msg" value="{{trans("Novalnet::PaymentMethod.doberror")}}">
+                {% if reinit is not empty %}
+                    <input type="hidden" id="nn_reinit" name="nn_reinit" value="{{reinit}}">
+                    <input type="hidden" id="nn_orderamount" name="nn_orderamount" value="{{orderAmount}}">
+                {% endif %}
                 <div class="row">
                     <div class="col-sm-12"><b><label for="nn_birthday">{{trans("Novalnet::PaymentMethod.birthdate_label")}}<span class="text-danger">*</span></label></b></div>
                     <div class="col-sm-4">
