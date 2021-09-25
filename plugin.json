@@ -1,5 +1,5 @@
 {
-  "version": "2.1.2",
+  "version": "2.2.0",
   "license":"GPL-3.0",
   "pluginIcon":"icon_plugin_xs.png",
   "price":0.0,
@@ -37,14 +37,14 @@
       "description" : "Display the Novalnet payment details on the order confirmation page"
     },
     {
-      "key":"Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePayment",
-      "name":"Novalnet Payment Method Reinitialize Payment",
-      "description":"Display the Payment Button after the Payment changed to the PaymentMethod"
+      "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePayment",
+      "name"        : "Novalnet Reinitialize Payment",
+      "description" : "Display the pay now Button"
     },
     {
-      "key":"Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePaymentScript",
-      "name":"Novalnet PaymentMethod Reinitialize Payment Script",
-      "description":"A Script for displaying the Payment Button after the Payment changed to the PaymentMethod"
+      "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePaymentScript",
+      "name"        : "Novalnet Reinitialize Payment Script",
+      "description" : "A script for displaying the pay now Button"
     }
   ]
 }
