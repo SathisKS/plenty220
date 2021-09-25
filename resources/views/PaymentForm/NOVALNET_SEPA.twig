@@ -25,11 +25,11 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-12">
                                 <div class="input-unit">
-                                    <input type="text" name="nn_sepa_cardholder" value="{{endcustomername}}" id="nn_sepa_cardholder"> 
+                                    <input type="text" name="nn_sepa_cardholder" value="{{endcustomername}}" id="nn_sepa_cardholder" required> 
                                     <label for="sepa_holder">{{trans("Novalnet::PaymentMethod.sepa_account_holder_label")}}*</label>
                                 </div>
                                 <div class="input-unit">
-                                    <input type="text" name="nn_sepa_iban" autocomplete="off" id="nn_sepa_iban" placeholder="DE00 0000 0000 0000 0000 00" style="text-transform:uppercase;">
+                                    <input type="text" name="nn_sepa_iban" autocomplete="off" id="nn_sepa_iban" placeholder="DE00 0000 0000 0000 0000 00" style="text-transform:uppercase;" required>
                                     <label for="sepa_iban">{{trans("Novalnet::PaymentMethod.sepa_iban_label")}}*</label>
                                 </div>
                                 <a href="#iban_details" data-toggle="collapse">{{trans("Novalnet::PaymentMethod.ibanMandate")}}</a>
