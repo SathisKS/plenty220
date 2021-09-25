@@ -97,7 +97,7 @@ class NovalnetPaymentMethodReinitializePayment
             'ccFormDetails'  => !empty($ccFormDetails) ? $ccFormDetails : '',
             'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
-            'nnGuaranteeStatus' => $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey),
+            'nnGuaranteeStatus' => $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount),
             'orderAmount' => $orderAmount
           ]);
        } else {
