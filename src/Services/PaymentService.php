@@ -679,9 +679,10 @@ class PaymentService
     *
     * @param object $basket
     * @param string $paymentKey
+    * @param int $orderAmount
     * @return string
     */
-    public function getGuaranteeStatus(Basket $basket, $paymentKey)
+    public function getGuaranteeStatus(Basket $basket, $paymentKey, $orderAmount = 0)
     {
         // Get payment name in lowercase
         $paymentKeyLow = strtolower((string) $paymentKey);
@@ -690,7 +691,7 @@ class PaymentService
             // Get guarantee minimum amount value
             $minimumAmount = $this->paymentHelper->getNovalnetConfig($paymentKeyLow . '_guarantee_min_amount');
             $minimumAmount = ((preg_match('/^[0-9]*$/', $minimumAmount) && $minimumAmount >= '999')  ? $minimumAmount : '999');
-            $amount        = (sprintf('%0.2f', $basket->basketAmount) * 100);
+            $amount        = !empty($basket->basketAmount) ? (sprintf('%0.2f', $basket->basketAmount) * 100) : $orderAmount;
 
             $billingAddressId = $basket->customerInvoiceAddressId;
             $billingAddress = $this->addressRepository->findAddressById($billingAddressId);
