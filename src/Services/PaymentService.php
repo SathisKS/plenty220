@@ -930,8 +930,10 @@ class PaymentService
           
         $serverRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
         $serverRequestData['data']['order_no'] = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
+        $this->getLogger(__METHOD__)->error('Direct payment Request', $serverRequestData);
         $response = $this->paymentHelper->executeCurl($serverRequestData['data'], $serverRequestData['url']);
         $responseData = $this->paymentHelper->convertStringToArray($response['response'], '&');
+        $this->getLogger(__METHOD__)->error('Direct payment Response', $responseData);
         $notificationMessage = $this->paymentHelper->getNovalnetStatusText($responseData);
         $responseData['payment_id'] = (!empty($responseData['payment_id'])) ? $responseData['payment_id'] : $responseData['key'];
         $isPaymentSuccess = isset($responseData['status']) && $responseData['status'] == '100';
