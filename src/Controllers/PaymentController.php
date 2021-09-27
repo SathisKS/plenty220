@@ -142,6 +142,8 @@ class PaymentController extends Controller
         $responseData['amount']    = $this->paymentHelper->decodeData($responseData['amount'], $responseData['uniqid']) / 100;
         $sessionPaymentRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentDataUpdated');
         $paymentRequestData = !empty($sessionPaymentRequestData) ? array_merge($sessionPaymentRequestData, $responseData) : $responseData;
+        
+        $this->getLogger(__METHOD__)->error('Redirect payment Response', $paymentRequestData);
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', $paymentRequestData);
         $this->paymentService->validateResponse();
        
@@ -254,7 +256,7 @@ class PaymentController extends Controller
         $paymentUrl = $this->sessionStorage->getPlugin()->getValue('nnPaymentUrl');
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', null);
         $this->sessionStorage->getPlugin()->setValue('nnOrderNo', null);
-
+        $this->getLogger(__METHOD__)->error('Redirect payment Request', $paymentRequestData);
         if(!empty($paymentRequestData['order_no'])) {
             $this->sessionStorage->getPlugin()->setValue('nnPaymentDataUpdated', $paymentRequestData);  
             return $this->twig->render('Novalnet::NovalnetPaymentRedirectForm', [
