@@ -73,6 +73,7 @@ class NovalnetPaymentMethodReinitializePayment
        // Set the request param for redirection payments
       if ($paymentService->isRedirectPayment($paymentKey, false)) {
          $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
+         $sessionStorage->getPlugin()->setValue('nnPaymentUrl', $serverRequestData['url']);
       } else { // Set the request param for direct payments
           $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
       }
