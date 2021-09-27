@@ -440,10 +440,11 @@ class PaymentService
      *
      * @param object $basket
      * @param string $paymentKey
+     * @param int $orderAmount
      * 
      * @return string
      */
-    public function getCreditCardAuthenticationCallData(Basket $basket, $paymentKey) {
+    public function getCreditCardAuthenticationCallData(Basket $basket, $paymentKey, $orderAmount = 0) {
         $billingAddressId = $basket->customerInvoiceAddressId;
         $billingAddress = $this->addressRepository->findAddressById($billingAddressId);
     $shippingAddress = $billingAddress;
@@ -463,7 +464,7 @@ class PaymentService
             'city'          => $billingAddress->town,
             'zip'           => $billingAddress->postalCode,
             'country_code'  => $this->countryRepository->findIsoCode($billingAddress->countryId, 'iso_code_2'),
-            'amount'        => $this->paymentHelper->convertAmountToSmallerUnit($basket->basketAmount),
+            'amount'        => !empty($basket->basketAmount) ? $this->paymentHelper->ConvertAmountToSmallerUnit($basket->basketAmount) : $orderAmount,
             'currency'      => $basket->currency,
             'lang'          => strtoupper($this->sessionStorage->getLocaleSettings()->language)
         ];  
