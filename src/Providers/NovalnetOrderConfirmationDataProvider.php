@@ -94,7 +94,11 @@ class NovalnetOrderConfirmationDataProvider
                     
                     // Display error message in the confirmation page
                     $statusMessage = $sessionStorage->getPlugin()->getValue('novalnet_status_message');
-                    $sessionStorage->getPlugin()->setValue('novalnet_status_message', null);
+                    if (in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100])) {
+                        $sessionStorage->getPlugin()->setValue('novalnet_status_message', null);
+                        $statusMessage = '';
+                    }
+                    
                     if(!empty($statusMessage)) {
                         $comments .= PHP_EOL . $statusMessage;
                     }
