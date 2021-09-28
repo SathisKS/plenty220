@@ -22,7 +22,7 @@ namespace Novalnet\Constants;
  */
 class NovalnetConstants
 {
-    const PLUGIN_VERSION = '7.0.0-NN(2.1.2)';
+    const PLUGIN_VERSION = '7.0.0-NN(2.2.0)';
     const PAYPORT_URL    = 'https://payport.novalnet.de/paygate.jsp';
     const CC3D_PAYMENT_URL = 'https://payport.novalnet.de/pci_payport';
     const GIROPAY_PAYMENT_URL = 'https://payport.novalnet.de/giropay';
