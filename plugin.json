@@ -39,12 +39,14 @@
     {
       "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePayment",
       "name"        : "Novalnet Reinitialize Payment",
-      "description" : "Display the pay now Button"
+      "description" : "Display the pay now Button",
+      "defaultLayoutContainer": "Ceres::OrderConfirmation.AdditionalPaymentInformation"
     },
     {
       "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePaymentScript",
       "name"        : "Novalnet Reinitialize Payment Script",
-      "description" : "A script for displaying the pay now Button"
+      "description" : "A script for displaying the pay now Button",
+      "defaultLayoutContainer": "Ceres::Script.AfterScriptsLoaded"
     }
   ]
 }
