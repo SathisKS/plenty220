@@ -275,7 +275,11 @@ class PaymentController extends Controller
     public function changePaymentMethod() 
     {
         $paymentKey = $this->sessionStorage->getPlugin()->getValue('paymentKey');
+        $isGuarantee = $this->sessionStorage->getPlugin()->getValue('nnProcessb2bGuarantee');
         if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT', 'NOVALNET_CASHPAYMENT'])) {
+            if($paymentKey == 'NOVALNET_INVOICE' && $isGuarantee == 'guarantee') {
+                $this->sessionStorage->getPlugin()->setValue('nnProceedGuarantee', $isGuarantee);
+            }
             $this->paymentService->paymentCalltoNovalnetServer();
             $this->paymentService->validateResponse();
         }
