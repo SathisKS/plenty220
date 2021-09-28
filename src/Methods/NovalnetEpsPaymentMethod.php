@@ -137,7 +137,7 @@ class NovalnetEpsPaymentMethod extends PaymentMethodService
     public function getDescription():string
     {
 		$description = trim($this->configRepository->get('Novalnet.novalnet_eps_description'));
-        return ($description ? $description : $this->paymentHelper->getTranslatedText('redirectional_payment_description'));
+        return ($description ? $description : sprintf($this->paymentHelper->getTranslatedText('redirectional_payment_description'),$this->paymentHelper->getTranslatedText('novalnet_eps')));
     }
 
     /**
