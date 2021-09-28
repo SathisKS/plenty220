@@ -26,6 +26,9 @@ use \Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Novalnet\Services\PaymentService;
 use Novalnet\Services\TransactionService;
+use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
+use Plenty\Modules\Plugin\DataBase\Contracts\Query;
+use Novalnet\Models\TransactionLog;
 
 /**
  * Class NovalnetOrderConfirmationDataProvider
@@ -48,6 +51,7 @@ class NovalnetOrderConfirmationDataProvider
         $paymentService = pluginApp(PaymentService::class);
         $transactionLog  = pluginApp(TransactionService::class); 
         $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
+        $database = pluginApp(DataBase::class);
         $order = $arg[0];
         $barzhlentoken = '';
         $barzahlenurl = '';
@@ -107,7 +111,7 @@ class NovalnetOrderConfirmationDataProvider
                             $comments .= PHP_EOL . $paymentHelper->getTranslatedText('gurantee_sepa_pending_payment_text');
                         }
                     }
-                    $get_transaction_details = $transactionLog->getTransactionData('orderNo', $orderId);
+                    $get_transaction_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->whereIn('paymentName', ['novalnet_invoice', 'novalnet_prepayment', 'novalnet_cashpayment'])->get();
                     $totalCallbackAmount = 0;
                     foreach ($get_transaction_details as $transaction_details) {
                        $totalCallbackAmount += $transaction_details->callbackAmount;
