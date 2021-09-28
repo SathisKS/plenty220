@@ -285,7 +285,7 @@ class CallbackController extends Controller
         
             if ($this->aryCaptureParams['payment_type'] == 'TRANSACTION_CANCELLATION')
             {
-                $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo);
+                $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo, $this->aryCaptureParams['tid']);
                 $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_transaction_cancellation',$orderLanguage),date('d.m.Y'), date('H:i:s'));
                 $this->paymentHelper->updatePayments($this->aryCaptureParams['tid'], $this->aryCaptureParams['tid_status'], $nnTransactionHistory->orderNo);
                 $this->sendCallbackMail($callbackComments);
@@ -386,7 +386,7 @@ class CallbackController extends Controller
                     {
                         
                         $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_initial_execution',$orderLanguage), $this->aryCaptureParams['shop_tid'], sprintf('%0.2f', ($this->aryCaptureParams['amount']/100)), $this->aryCaptureParams['currency'], date('d.m.Y'), date('H:i:s'), $this->aryCaptureParams['tid'] ).'</br>';
-                        $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo);
+                        $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo, $this->aryCaptureParams['tid']);
                         if($this->aryCaptureParams['tid_status'] == '100' && $transactionStatus == '90') {
                             $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_transaction_update_text',$orderLanguage), $this->aryCaptureParams['tid']);    
                         }           
@@ -412,7 +412,7 @@ class CallbackController extends Controller
                     }
                 }  elseif (in_array($this->aryCaptureParams['payment_type'], ['CREDITCARD', 'INVOICE_START', 'GUARANTEED_INVOICE', 'DIRECT_DEBIT_SEPA', 'GUARANTEED_DIRECT_DEBIT_SEPA'] )) {
                 
-                    $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo);
+                    $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo, $this->aryCaptureParams['tid']);
                     if ($this->aryCaptureParams['tid_status'] !=  $transactionStatus && (in_array($this->aryCaptureParams['tid_status'], ['91', '99', '100']) && in_array($transactionStatus, ['75', '91', '98', '99']))) {
                         
                     $saveAdditionData = false;
@@ -438,7 +438,7 @@ class CallbackController extends Controller
                     $db_details = $this->paymentService->getDatabaseValues($nnTransactionHistory->orderNo);
                             if(in_array ($db_details['payment_id'], ['6', '27', '37', '40', '41']) && $saveAdditionData) {
                                 if (in_array($this->aryCaptureParams['tid_status'], ['91', '100'] ) && in_array ($db_details['payment_id'], [ '27', '41']) ) {
-                                        $paymentDetails = $this->payment_details($nnTransactionHistory->orderNo, true);
+                                        $paymentDetails = $this->payment_details($nnTransactionHistory->orderNo, $this->aryCaptureParams['tid'], true);
                                         $bankDetails = json_decode($paymentDetails);
                                         $paymentData['invoice_bankname'] = !empty($this->aryCaptureParams['invoice_bankname']) ? $this->aryCaptureParams['invoice_bankname'] : $bankDetails->invoice_bankname;
                                         $paymentData['invoice_bankplace'] = !empty($this->aryCaptureParams['invoice_bankplace']) ? $this->aryCaptureParams['invoice_bankplace'] : $bankDetails->invoice_bankplace;
@@ -609,9 +609,11 @@ class CallbackController extends Controller
      * Get payment details
      *
      * @param int $orderId
+     * @param int $tid
+     * @param bool $bankDetails
      * @return int
      */
-    public function payment_details($orderId, $bankDetails=false)
+    public function payment_details($orderId, $tid, $bankDetails=false)
     {
     $payments = $this->paymentRepository->getPaymentsByOrderId( $orderId);
     foreach ($payments as $payment)
@@ -619,14 +621,17 @@ class CallbackController extends Controller
         $property = $payment->properties;
         foreach($property as $proper)
         {
-          if ($proper->typeId == 30)
+          if($proper->typeId == 1) {
+             $nn_tx_tid = $proper->value; 
+          }
+          if ($proper->typeId == 30 && $nn_tx_tid == $tid)
           {
             $status = $proper->value;
           }
-        if ($proper->typeId == 21) 
-             {
-                 $invoiceDetails = $proper->value;
-             }
+          if ($proper->typeId == 21) 
+          {
+            $invoiceDetails = $proper->value;
+          }
         }
         }
         $transactionDetails = ($bankDetails == 'true' ) ? $invoiceDetails : $status;
