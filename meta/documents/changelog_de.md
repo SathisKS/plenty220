@@ -1,5 +1,12 @@
 # Informationen zum Novalnet Release
 
+
+## v2.2.0 (2021-09-28)
+
+### Neu
+
+- Funktionen "Zahlungsmethode ändern" und "Zahlung vornehmen" für fehlgeschlagene und abgelehnte Transaktionen
+
 ## v2.1.1 (2021-09-08)
 
 ### Behoben
