@@ -34,6 +34,7 @@ class NovalnetPaymentMethodReinitializePayment
     $paymentService = pluginApp(PaymentService::class);
     $config = pluginApp(ConfigRepository::class);
     $basketRepository = pluginApp(BasketRepositoryContract::class);
+    $addressRepository = pluginApp(AddressRepositoryContract::class);
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
