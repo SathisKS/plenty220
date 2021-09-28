@@ -1,5 +1,11 @@
 # Release Notes for Novalnet
 
+## v2.2.0 (2021-09-28)
+
+### New
+
+- Implemented Change payment method and Initiate payment feature for the failure and rejection orders
+
 ## v2.1.1 (2021-09-08)
 
 ### Fix
