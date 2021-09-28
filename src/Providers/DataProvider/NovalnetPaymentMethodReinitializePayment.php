@@ -22,6 +22,7 @@ use Plenty\Plugin\ConfigRepository;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
+use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 
 class NovalnetPaymentMethodReinitializePayment
 {
@@ -82,6 +83,25 @@ class NovalnetPaymentMethodReinitializePayment
          $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);
          $ccCustomFields = $paymentService->getCcFormFields();
       }
+    
+     // Get company and birthday values
+      $basket = $basketRepository->load();            
+      $billingAddressId = $basket->customerInvoiceAddressId;
+      $address = $addressRepository->findAddressById($billingAddressId);
+      foreach ($address->options as $option) {
+        if ($option->typeId == 9) {
+            $birthday = $option->value;
+        }
+      }  
+
+      // Set guarantee status
+      $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount);
+      $show_birthday = (empty($address->companyName) && empty($birthday)) ? $guarantee_status : '';
+
+      if ($guarantee_status == 'guarantee' && $show_birthday == '') {
+        $sessionStorage->getPlugin()->setValue('nnProcessb2bGuarantee', $guarantee_status);
+      }
+    
        
        // If the Novalnet payments are rejected do the reinitialize payment
        if( !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100]) ) {
@@ -98,7 +118,7 @@ class NovalnetPaymentMethodReinitializePayment
             'ccFormDetails'  => !empty($ccFormDetails) ? $ccFormDetails : '',
             'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
-            'nnGuaranteeStatus' => $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount),
+            'nnGuaranteeStatus' => $show_birthday,
             'orderAmount' => $orderAmount
           ]);
        } else {
