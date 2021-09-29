@@ -587,13 +587,6 @@ class PaymentService
         return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/redirectPayment/';
     }
     
-    
-     
-    public function getGuestUserProcessPaymentUrl()
-    {
-        return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/reinitGuestUser/';
-    }
-    
     /**
     * Get the payment process URL by using plenty payment key
     *
