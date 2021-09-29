@@ -123,7 +123,8 @@ class NovalnetPaymentMethodReinitializePayment
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
             'nnGuaranteeStatus' => $show_birthday,
             'orderAmount' => $orderAmount,
-            'billingAddressId' => $order['billingAddress']['id']
+            'billingAddressId' => $order['billingAddress']['id'],
+            'shippingAddressId' => $order['deliveryAddress']['id']
           ]);
        } else {
           return '';
