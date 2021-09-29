@@ -259,10 +259,12 @@ class PaymentService
      * @param PaymentKey $paymentKey
      * @param bool $doRedirect
      * @param int $orderAmount
+     * @param int $billingInvoiceAddrId
+     * @param int $shippingInvoiceAddrId
      *
      * @return array
      */
-    public function getRequestParameters(Basket $basket, $paymentKey = '', $doRedirect = false, $orderAmount = 0)
+    public function getRequestParameters(Basket $basket, $paymentKey = '', $doRedirect = false, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0)
     {
         
      /** @var \Plenty\Modules\Frontend\Services\VatService $vatService */
@@ -275,11 +277,12 @@ class PaymentService
             $basket->basketAmount = $basket->basketAmountNet;
         }
         
-        $billingAddressId = $basket->customerInvoiceAddressId;
+        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $billingInvoiceAddrId;
+        $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
         $address = $this->addressRepository->findAddressById($billingAddressId);
-    $shippingAddress = $address;
-        if(!empty($basket->customerShippingAddressId)){
-            $shippingAddress = $this->addressRepository->findAddressById($basket->customerShippingAddressId);
+        $shippingAddress = $address;
+        if(!empty($shippingAddressId)){
+            $shippingAddress = $this->addressRepository->findAddressById($shippingAddressId);
         }
         
     $customerName = $this->getCustomerName($address);
