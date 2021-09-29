@@ -3,7 +3,6 @@
 <script type="text/javascript">
 
   jQuery(function () {
-    jQuery('.payment-confirmation-btn').prop('disabled', true);
     
     jQuery("#direct-payment-process").click(function () {
       jQuery.get("/payment/novalnet/changePaymentMethod/", function(data)
