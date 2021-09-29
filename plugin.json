@@ -34,17 +34,20 @@
     {
       "key"         : "Novalnet\\Providers\\NovalnetOrderConfirmationDataProvider",
       "name"        : "Novalnet payment details",
-      "description" : "Display the Novalnet payment details on the order confirmation page"
+      "description" : "Display the Novalnet payment details on the order confirmation page",
+      "defaultLayoutContainer": "Order confirmation: Additional payment information"
     },
     {
       "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePayment",
       "name"        : "Novalnet Reinitialize Payment",
-      "description" : "Display the pay now Button"
+      "description" : "Display the pay now Button",
+      "defaultLayoutContainer": "Order confirmation: Additional payment information"
     },
     {
       "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePaymentScript",
       "name"        : "Novalnet Reinitialize Payment Script",
-      "description" : "A script for displaying the pay now Button"
+      "description" : "A script for displaying the pay now Button",
+      "defaultLayoutContainer": "Script loader: After scripts loaded"
     }
   ]
 }
