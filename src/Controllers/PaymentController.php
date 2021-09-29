@@ -166,6 +166,9 @@ class PaymentController extends Controller
             $dob = $option->value;
             }
        }
+        $this->getLogger(__METHOD__)->error('controller bill id', $billingAddressId);
+        
+        $this->getLogger(__METHOD__)->error('controller basket', $basket);
         
         $doRedirect = false;
         if($requestData['paymentKey'] == 'NOVALNET_CC' && !empty($requestData['nn_cc3d_redirect']) ) {
