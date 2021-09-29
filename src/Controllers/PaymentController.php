@@ -252,9 +252,7 @@ class PaymentController extends Controller
      *
      */
     public function redirectPayment()
-    {
-        $this->processPayment();
-        $this->getLogger(__METHOD__)->error('Redirect payment exist', 'called');
+    {        
         $paymentRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
         $orderNo = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
         $paymentRequestData['order_no'] = $orderNo;
@@ -294,7 +292,8 @@ class PaymentController extends Controller
      {
          $requestData = $this->request->all();
          $this->getLogger(__METHOD__)->error('guest user route', $requestData);
-         $this->processPayment();
+         return $this->response->redirectTo('confirmation');
+         //$this->processPayment();
      }
     
 }
