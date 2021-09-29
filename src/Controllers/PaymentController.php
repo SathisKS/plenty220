@@ -159,7 +159,7 @@ class PaymentController extends Controller
         $requestData = $this->request->all();
         $notificationMessage = $this->paymentHelper->getNovalnetStatusText($requestData);
         $basket = $this->basketRepository->load();  
-        $billingAddressId = $basket->customerInvoiceAddressId;
+        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $requestData['billingAddressId'];
         $address = $this->addressRepository->findAddressById($billingAddressId);
         foreach ($address->options as $option) {
             if ($option->typeId == 9) {
