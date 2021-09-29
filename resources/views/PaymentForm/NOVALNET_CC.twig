@@ -13,6 +13,8 @@
     {% if reinit is not empty %}
         <input type="hidden" id="nn_reinit" name="nn_reinit" value="{{reinit}}">
         <input type="hidden" id="nn_orderamount" name="nn_orderamount" value="{{orderAmount}}">
+        <input type="hidden" id="nn_billing_addressid" name="nn_billing_addressid" value="{{billingAddressId}}">
+        <input type="hidden" id="nn_shipping_addressid" name="nn_shipping_addressid" value="{{shippingAddressId}}">
     {% endif %}
                 
     <div class="modal_cc_popup">
