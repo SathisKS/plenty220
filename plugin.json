@@ -47,7 +47,7 @@
       "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePaymentScript",
       "name"        : "Novalnet Initiate Payment Script",
       "description" : "A script for displaying the pay now Button",
-      "defaultLayoutContainer": "Ceres::Script.Loader"
+      "defaultLayoutContainer": "Ceres::Script.AfterScriptsLoaded"
     }
   ]
 }
