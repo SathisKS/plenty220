@@ -167,10 +167,7 @@ class PaymentController extends Controller
             $dob = $option->value;
             }
        }
-        $this->getLogger(__METHOD__)->error('controller bill id', $billingAddressId);
-        
-        $this->getLogger(__METHOD__)->error('controller basket', $basket);
-        
+       
         $doRedirect = false;
         if($requestData['paymentKey'] == 'NOVALNET_CC' && !empty($requestData['nn_cc3d_redirect']) ) {
               $doRedirect = true;
@@ -180,8 +177,6 @@ class PaymentController extends Controller
         } else {
             $serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey'], $doRedirect, 0, $billingAddressId, $shippingAddressId);
         }
-        
-        $this->getLogger(__METHOD__)->error('controller basket 123', $basket);
         
         if (empty($serverRequestData['data']['first_name']) && empty($serverRequestData['data']['last_name'])) {
         $notificationMessage = $this->paymentHelper->getTranslatedText('nn_first_last_name_error');
@@ -294,13 +289,5 @@ class PaymentController extends Controller
             $this->paymentService->validateResponse();
         }
     }
-    
-     public function reinitGuestUser() 
-     {
-         $requestData = $this->request->all();
-         $this->getLogger(__METHOD__)->error('guest user route', $requestData);
-         return $this->response->redirectTo('confirmation');
-         //$this->processPayment();
-     }
-    
+   
 }
