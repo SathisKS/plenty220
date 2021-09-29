@@ -115,14 +115,15 @@ class NovalnetPaymentMethodReinitializePayment
             'isRedirectPayment' => $paymentService->isRedirectPayment($paymentKey, false),
             'redirectUrl' => $paymentService->getRedirectPaymentUrl(),
             'reinit' => 1,
-            'nnPaymentProcessUrl' => $paymentService->getGuestUserProcessPaymentUrl(),
+            'nnPaymentProcessUrl' => $paymentService->getProcessPaymentUrl(),
             'paymentMopKey'     =>  $paymentKey,
             'paymentName' => $paymentName,
             'ccFormDetails'  => !empty($ccFormDetails) ? $ccFormDetails : '',
             'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
             'nnGuaranteeStatus' => $show_birthday,
-            'orderAmount' => $orderAmount
+            'orderAmount' => $orderAmount,
+            'billingAddressId' => $order['billingAddress']['id']
           ]);
        } else {
           return '';
