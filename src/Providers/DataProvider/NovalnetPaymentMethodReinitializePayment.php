@@ -68,9 +68,9 @@ class NovalnetPaymentMethodReinitializePayment
        $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
       // Form the payment request data 
        $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
-       $sessionStorage->getPlugin()->setValue('nnOrderNo',$order['id']);
-       $sessionStorage->getPlugin()->setValue('mop',$mopId);
-       $sessionStorage->getPlugin()->setValue('paymentKey',$paymentKey);
+       $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
+       $sessionStorage->getPlugin()->setValue('mop', $mopId);
+       $sessionStorage->getPlugin()->setValue('paymentKey', $paymentKey);
        
        // Set the request param for redirection payments
       if ($paymentService->isRedirectPayment($paymentKey, false)) {
@@ -120,7 +120,10 @@ class NovalnetPaymentMethodReinitializePayment
             'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
             'nnGuaranteeStatus' => $show_birthday,
-            'orderAmount' => $orderAmount
+            'orderAmount' => $orderAmount,
+            'billingInvoiceAddrId' => $order['billingAddress']['id'],
+            'shippingInvoiceAddrId' => $order['deliveryAddress']['id']
+            
           ]);
        } else {
           return '';
