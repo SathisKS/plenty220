@@ -21,6 +21,8 @@
                 {% if reinit is not empty %}
                     <input type="hidden" id="nn_reinit" name="nn_reinit" value="{{reinit}}">
                     <input type="hidden" id="nn_orderamount" name="nn_orderamount" value="{{orderAmount}}">
+                    <input type="hidden" id="nn_billing_addressid" name="nn_billing_addressid" value="{{billingAddressId}}">
+                    <input type="hidden" id="nn_shipping_addressid" name="nn_shipping_addressid" value="{{shippingAddressId}}">
                 {% endif %}
                 <div class="row">
                     <div class="col-sm-12"><b><label for="nn_birthday">{{trans("Novalnet::PaymentMethod.birthdate_label")}}<span class="text-danger">*</span></label></b></div>
