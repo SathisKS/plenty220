@@ -87,7 +87,7 @@ class NovalnetPaymentMethodReinitializePayment
     
      // Get company and birthday values
       $basket = $basketRepository->load();            
-      $billingAddressId = $basket->customerInvoiceAddressId;
+      $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $order['billingAddress']['id'];
       $address = $addressRepository->findAddressById($billingAddressId);
       foreach ($address->options as $option) {
         if ($option->typeId == 9) {
