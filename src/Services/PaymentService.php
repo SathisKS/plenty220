@@ -449,12 +449,13 @@ class PaymentService
      * 
      * @return string
      */
-    public function getCreditCardAuthenticationCallData(Basket $basket, $paymentKey, $orderAmount = 0) {
-        $billingAddressId = $basket->customerInvoiceAddressId;
+    public function getCreditCardAuthenticationCallData(Basket $basket, $paymentKey, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0) {
+        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $billingInvoiceAddrId;
+        $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
         $billingAddress = $this->addressRepository->findAddressById($billingAddressId);
-    $shippingAddress = $billingAddress;
-        if(!empty($basket->customerShippingAddressId)){
-            $shippingAddress = $this->addressRepository->findAddressById($basket->customerShippingAddressId);
+        $shippingAddress = $billingAddress;
+        if(!empty($shippingAddressId)){
+            $shippingAddress = $this->addressRepository->findAddressById($shippingAddressId);
         }
         $customerName = $this->getCustomerName($billingAddress);
         $ccFormRequestParameters = [
