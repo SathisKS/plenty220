@@ -38,6 +38,7 @@ class NovalnetPaymentMethodReinitializePayment
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
+    $basket = $basketRepository->load()
     
     // Get payment method Id and status
     foreach($order['properties'] as $property) {
@@ -66,8 +67,11 @@ class NovalnetPaymentMethodReinitializePayment
        $paymentName = ($name ? $name : $paymentHelper->getTranslatedText(strtolower($paymentKey)));
       // Get the orderamount from order object if the basket amount is empty
        $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
-      // Form the payment request data 
-       $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
+      // Form the payment request data   
+      $serverRequestData = [];
+      if (!empty($basket->customerInvoiceAddressId)) {
+       $serverRequestData = $paymentService->getRequestParameters($basket, $paymentKey, false, $orderAmount);
+      }
        $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
        $sessionStorage->getPlugin()->setValue('mop', $mopId);
        $sessionStorage->getPlugin()->setValue('paymentKey', $paymentKey);
@@ -80,7 +84,7 @@ class NovalnetPaymentMethodReinitializePayment
           $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
       }
        
-      if ($paymentKey == 'NOVALNET_CC') {
+      if ($paymentKey == 'NOVALNET_CC' && !empty($basket->customerInvoiceAddressId)) {
          $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);
          $ccCustomFields = $paymentService->getCcFormFields();
       }
@@ -120,10 +124,7 @@ class NovalnetPaymentMethodReinitializePayment
             'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
             'nnGuaranteeStatus' => $show_birthday,
-            'orderAmount' => $orderAmount,
-            'billingInvoiceAddrId' => $order['billingAddress']['id'],
-            'shippingInvoiceAddrId' => $order['deliveryAddress']['id']
-            
+            'orderAmount' => $orderAmount
           ]);
        } else {
           return '';
