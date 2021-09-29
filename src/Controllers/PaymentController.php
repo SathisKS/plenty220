@@ -288,4 +288,11 @@ class PaymentController extends Controller
         }
     }
     
+     public function reinitGuestUser() 
+     {
+         $requestData = $this->request->all();
+         $this->getLogger(__METHOD__)->error('guest user', $requestData);
+         $this->processPayment();
+     }
+    
 }
