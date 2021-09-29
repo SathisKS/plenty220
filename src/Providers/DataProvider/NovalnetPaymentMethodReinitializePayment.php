@@ -38,7 +38,7 @@ class NovalnetPaymentMethodReinitializePayment
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
-    $basket = $basketRepository->load();
+
     
     // Get payment method Id and status
     foreach($order['properties'] as $property) {
@@ -67,11 +67,9 @@ class NovalnetPaymentMethodReinitializePayment
        $paymentName = ($name ? $name : $paymentHelper->getTranslatedText(strtolower($paymentKey)));
       // Get the orderamount from order object if the basket amount is empty
        $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
-      // Form the payment request data   
-      $serverRequestData = [];
-      if (!empty($basket->customerInvoiceAddressId)) {
-       $serverRequestData = $paymentService->getRequestParameters($basket, $paymentKey, false, $orderAmount);
-      }
+      // Form the payment request data     
+       $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
+ 
        $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
        $sessionStorage->getPlugin()->setValue('mop', $mopId);
        $sessionStorage->getPlugin()->setValue('paymentKey', $paymentKey);
@@ -84,8 +82,8 @@ class NovalnetPaymentMethodReinitializePayment
           $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
       }
        
-      if ($paymentKey == 'NOVALNET_CC' && !empty($basket->customerInvoiceAddressId)) {
-         $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);
+      if ($paymentKey == 'NOVALNET_CC') {
+         $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
          $ccCustomFields = $paymentService->getCcFormFields();
       }
     
