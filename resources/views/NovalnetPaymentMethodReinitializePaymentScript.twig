@@ -1,24 +1,25 @@
 <input type="hidden" name="nn_mop_id" id="nn_mop_id" value="{{paymentMethodIds}}">
 
 <script type="text/javascript">
-    jQuery('document').ready(function() {
-      jQuery('#redirect-payment-process').click(function() {
+
+  jQuery(function () {
+    jQuery('.payment-confirmation-btn').prop('disabled', true);
+    
+    jQuery("#direct-payment-process").click(function () {
+      jQuery.get("/payment/novalnet/changePaymentMethod/", function(data)
+      {
+        window.location = data;
+      });
+    });
+    
+    jQuery('#redirect-payment-process').click(function() {
         window.location.href = jQuery('#nn_redirect_url').val();
       });
   
       jQuery('#form-payment-process').click(function() {
         jQuery('#novalnetPaymentForm').show();
       });
-  
-    });
-
-  $(function () {
-    $("#direct-payment-process").click(function () {
-      $.get("/payment/novalnet/changePaymentMethod/", function(data)
-      {
-        window.location = data;
-      });
-    });
+    
   });
  
   var paymentMethodIds = jQuery('#nn_mop_id').val();
