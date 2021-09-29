@@ -253,6 +253,7 @@ class PaymentController extends Controller
      */
     public function redirectPayment()
     {
+        $this->getLogger(__METHOD__)->error('Redirect payment exist', 'called');
         $paymentRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
         $orderNo = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
         $paymentRequestData['order_no'] = $orderNo;
