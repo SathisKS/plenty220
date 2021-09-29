@@ -115,7 +115,7 @@ class NovalnetPaymentMethodReinitializePayment
             'isRedirectPayment' => $paymentService->isRedirectPayment($paymentKey, false),
             'redirectUrl' => $paymentService->getRedirectPaymentUrl(),
             'reinit' => 1,
-            'nnPaymentProcessUrl' => $paymentService->getGuestUserProcessPaymentUrl(),
+            'nnPaymentProcessUrl' => $paymentService->getRedirectPaymentUrl(),
             'paymentMopKey'     =>  $paymentKey,
             'paymentName' => $paymentName,
             'ccFormDetails'  => !empty($ccFormDetails) ? $ccFormDetails : '',
