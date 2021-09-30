@@ -685,9 +685,11 @@ class PaymentService
     * @param object $basket
     * @param string $paymentKey
     * @param int $orderAmount
+    * @param int $billingInvoiceAddrId
+    * @param int $shippingInvoiceAddrId
     * @return string
     */
-    public function getGuaranteeStatus(Basket $basket, $paymentKey, $orderAmount = 0)
+    public function getGuaranteeStatus(Basket $basket, $paymentKey, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0)
     {
         // Get payment name in lowercase
         $paymentKeyLow = strtolower((string) $paymentKey);
@@ -698,11 +700,11 @@ class PaymentService
             $minimumAmount = ((preg_match('/^[0-9]*$/', $minimumAmount) && $minimumAmount >= '999')  ? $minimumAmount : '999');
             $amount        = !empty($basket->basketAmount) ? (sprintf('%0.2f', $basket->basketAmount) * 100) : $orderAmount;
 
-            $billingAddressId = $basket->customerInvoiceAddressId;
+            $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $billingInvoiceAddrId;
             $billingAddress = $this->addressRepository->findAddressById($billingAddressId);
             $customerBillingIsoCode = strtoupper($this->countryRepository->findIsoCode($billingAddress->countryId, 'iso_code_2'));
 
-            $shippingAddressId = $basket->customerShippingAddressId;
+            $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
 
             $addressValidation = false;
             if(!empty($shippingAddressId))
