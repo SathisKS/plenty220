@@ -207,7 +207,11 @@ class PaymentController extends Controller
             }            
             
             $orderAmount = !empty($requestData['nn_orderamount']) ? $requestData['nn_orderamount'] : 0;
-            $guranteeStatus = $this->paymentService->getGuaranteeStatus($this->basketRepository->load(), $requestData['paymentKey'], $orderAmount);
+            if (!empty($basket->customerInvoiceAddressId)) {
+                $guranteeStatus = $this->paymentService->getGuaranteeStatus($this->basketRepository->load(), $requestData['paymentKey'], $orderAmount);
+            } else {
+                $guranteeStatus = $this->paymentService->getGuaranteeStatus($this->basketRepository->load(), $requestData['paymentKey'], $orderAmount, $billingAddressId, $shippingAddressId);
+            }
             
             if('guarantee' == $guranteeStatus)
             {    
