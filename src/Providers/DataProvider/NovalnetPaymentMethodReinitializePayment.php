@@ -67,8 +67,8 @@ class NovalnetPaymentMethodReinitializePayment
        $paymentName = ($name ? $name : $paymentHelper->getTranslatedText(strtolower($paymentKey)));
       // Get the orderamount from order object if the basket amount is empty
        $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
-      // Form the payment request data     
-       $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
+      // Form the payment request data
+      $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
  
        $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
        $sessionStorage->getPlugin()->setValue('mop', $mopId);
@@ -98,7 +98,7 @@ class NovalnetPaymentMethodReinitializePayment
       }  
 
       // Set guarantee status
-      $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount);
+      $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
       $show_birthday = (empty($address->companyName) && empty($birthday)) ? $guarantee_status : '';
 
       if ($guarantee_status == 'guarantee' && $show_birthday == '') {
